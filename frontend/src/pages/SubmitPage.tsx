@@ -36,8 +36,9 @@ export default function SubmitPage() {
     try {
       await API.post("/grievances/", form);
       navigate("/dashboard");
-    } catch (err: any) {
-      setError(err.response?.data?.detail || "Submission failed");
+    } catch (err) {
+      const axiosError = err as { response?: { data?: { detail?: string } } };
+      setError(axiosError.response?.data?.detail || "Submission failed");
     } finally {
       setLoading(false);
     }

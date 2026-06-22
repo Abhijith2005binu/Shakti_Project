@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
@@ -35,16 +35,16 @@ export default function AdminPage() {
   const navigate = useNavigate();
   const name = localStorage.getItem("name");
 
-  const fetchData = () => {
+  const fetchData = useCallback(() => {
     API.get("/admin/grievances")
       .then((res) => setGrievances(res.data))
       .catch(() => navigate("/login"));
     API.get("/admin/analytics").then((res) => setAnalytics(res.data));
-  };
+  }, [navigate]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleUpdateStatus = async (id: number) => {
     if (!note) return alert("Please add a note");

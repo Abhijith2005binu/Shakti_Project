@@ -29,7 +29,7 @@ export default function DashboardPage() {
       .then((res) => setGrievances(res.data))
       .catch(() => navigate("/login"))
       .finally(() => setLoading(false));
-  }, []);
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.clear();

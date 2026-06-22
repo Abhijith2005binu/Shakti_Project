@@ -24,8 +24,9 @@ export default function ForgotPasswordPage() {
       const res = await API.post("/auth/forgot-password", { email });
       setResetToken(res.data.reset_token);
       setStep("reset");
-    } catch (err: any) {
-      setError(err.response?.data?.detail || "Failed to verify email");
+    } catch (err) {
+      const axiosError = err as { response?: { data?: { detail?: string } } };
+      setError(axiosError.response?.data?.detail || "Failed to verify email");
     } finally {
       setLoading(false);
     }
@@ -53,8 +54,9 @@ export default function ForgotPasswordPage() {
       });
       setSuccess("Password reset successfully! Redirecting to login...");
       setTimeout(() => navigate("/login"), 2000);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || "Failed to reset password");
+    } catch (err) {
+      const axiosError = err as { response?: { data?: { detail?: string } } };
+      setError(axiosError.response?.data?.detail || "Failed to reset password");
     } finally {
       setLoading(false);
     }

@@ -23,8 +23,9 @@ export default function RegisterPage() {
     try {
       await API.post("/auth/register", form);
       navigate("/login");
-    } catch (err: any) {
-      setError(err.response?.data?.detail || "Registration failed");
+    } catch (err) {
+      const axiosError = err as { response?: { data?: { detail?: string } } };
+      setError(axiosError.response?.data?.detail || "Registration failed");
     } finally {
       setLoading(false);
     }
