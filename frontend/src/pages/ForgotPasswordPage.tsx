@@ -61,24 +61,29 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h1 className="text-3xl font-bold text-green-700 mb-2">
-          Reset Password
-        </h1>
-        <p className="text-gray-500 mb-6">
-          {step === "email"
-            ? "Enter your registered email to reset your password"
-            : "Create a new password for your account"}
-        </p>
+    <div className="min-h-screen bg-white text-black font-sans flex items-center justify-center relative overflow-hidden py-10">
+      {/* Subtle radial gradient to mimic a clean, airy background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(26,115,232,0.03)_0,rgba(255,255,255,1)_100%)] pointer-events-none"></div>
+
+      <div className="bg-white p-10 rounded-[32px] shadow-[0_8px_40px_rgb(0,0,0,0.04)] w-full max-w-md border border-gray-100 relative z-10">
+        <div className="mb-10 text-center">
+          <h1 className="text-4xl font-normal text-black mb-3 tracking-tight">
+            Reset Password
+          </h1>
+          <p className="text-gray-500 text-sm">
+            {step === "email"
+              ? "Enter your registered email to reset your password"
+              : "Create a new password for your account"}
+          </p>
+        </div>
 
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm">
+          <div className="bg-red-50 text-red-600 p-4 rounded-2xl mb-6 text-sm text-center font-medium">
             {error}
           </div>
         )}
         {success && (
-          <div className="bg-green-50 text-green-700 p-3 rounded-lg mb-4 text-sm">
+          <div className="bg-blue-50 text-blue-600 p-4 rounded-2xl mb-6 text-sm text-center font-medium">
             {success}
           </div>
         )}
@@ -86,12 +91,12 @@ export default function ForgotPasswordPage() {
         {step === "email" && (
           <>
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email
               </label>
               <input
                 type="email"
-                className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full bg-gray-50 border border-transparent text-black rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all placeholder-gray-400"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -101,7 +106,7 @@ export default function ForgotPasswordPage() {
             <button
               onClick={handleEmailSubmit}
               disabled={loading}
-              className="w-full bg-green-700 text-white py-2.5 rounded-lg hover:bg-green-800 transition font-medium disabled:opacity-50"
+              className="w-full bg-black text-white py-4 rounded-full hover:bg-gray-800 transition-all font-medium disabled:opacity-50 active:scale-[0.98]"
             >
               {loading ? "Verifying..." : "Continue"}
             </button>
@@ -110,28 +115,28 @@ export default function ForgotPasswordPage() {
 
         {step === "reset" && !success && (
           <>
-            <div className="bg-green-50 text-green-700 p-3 rounded-lg mb-4 text-sm">
+            <div className="bg-blue-50 text-blue-600 p-4 rounded-2xl mb-6 text-sm text-center font-medium">
               Email verified! Please enter your new password below.
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="mb-5">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 New Password
               </label>
               <input
                 type="password"
-                className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full bg-gray-50 border border-transparent text-black rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all placeholder-gray-400"
                 placeholder="••••••••"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
             </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="mb-8">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Confirm New Password
               </label>
               <input
                 type="password"
-                className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full bg-gray-50 border border-transparent text-black rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all placeholder-gray-400"
                 placeholder="••••••••"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -141,22 +146,21 @@ export default function ForgotPasswordPage() {
             <button
               onClick={handleResetPassword}
               disabled={loading}
-              className="w-full bg-green-700 text-white py-2.5 rounded-lg hover:bg-green-800 transition font-medium disabled:opacity-50"
+              className="w-full bg-black text-white py-4 rounded-full hover:bg-gray-800 transition-all font-medium disabled:opacity-50 active:scale-[0.98]"
             >
               {loading ? "Resetting..." : "Reset Password"}
             </button>
           </>
         )}
 
-        <p className="text-center text-sm text-gray-500 mt-4">
-          Remember your password?{" "}
+        <div className="mt-4 text-center">
           <Link
             to="/login"
-            className="text-green-700 font-medium hover:underline"
+            className="inline-block w-full bg-[#F1F3F4] text-black py-4 rounded-full hover:bg-[#E8EAED] transition-all font-medium active:scale-[0.98]"
           >
             Back to Login
           </Link>
-        </p>
+        </div>
       </div>
     </div>
   );

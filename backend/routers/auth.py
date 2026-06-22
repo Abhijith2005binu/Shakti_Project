@@ -98,4 +98,4 @@ def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db))
         raise HTTPException(status_code=404, detail="User not found")
     user.hashed_password = hash_password(payload.new_password)
     db.commit()
-    return {"message": "Password reset successfully"}
+    return {"message": "Password reset successfully"}
