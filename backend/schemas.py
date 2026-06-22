@@ -31,6 +31,13 @@ class TokenResponse(BaseModel):
     role: str
     name: str
 
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
+
 # ─── Grievance ──────────────────────────────────────
 class GrievanceCreate(BaseModel):
     title: str

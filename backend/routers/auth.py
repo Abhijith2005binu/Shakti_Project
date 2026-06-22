@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
 from models import User
-from schemas import UserRegister, UserLogin, TokenResponse
+from schemas import UserRegister, UserLogin, TokenResponse, ForgotPasswordRequest, ResetPasswordRequest
 from jose import jwt
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -67,3 +67,35 @@ def login(payload: UserLogin, db: Session = Depends(get_db)):
         "role": user.role,
         "name": user.name
     }
+
+@router.post("/forgot-password")
+def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == payload.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="No account found with this email")
+    # Create a short-lived reset token (15 minutes)
+    reset_data = {
+        "sub": str(user.id),
+        "purpose": "password_reset",
+        "exp": datetime.utcnow() + timedelta(minutes=15)
+    }
+    reset_token = jwt.encode(reset_data, SECRET_KEY, algorithm=ALGORITHM)
+    return {"message": "Reset token generated", "reset_token": reset_token}
+
+@router.post("/reset-password")
+def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db)):
+    try:
+        decoded = jwt.decode(payload.token, SECRET_KEY, algorithms=[ALGORITHM])
+        if decoded.get("purpose") != "password_reset":
+            raise HTTPException(status_code=400, detail="Invalid reset token")
+        user_id = int(decoded["sub"])
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset token")
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    user.hashed_password = hash_password(payload.new_password)
+    db.commit()
+    return {"message": "Password reset successfully"}
