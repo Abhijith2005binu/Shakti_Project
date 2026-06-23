@@ -6,6 +6,7 @@ import DashboardPage from "./pages/DashboardPage";
 import SubmitPage from "./pages/SubmitPage";
 import TrackPage from "./pages/TrackPage";
 import AdminPage from "./pages/AdminPage";
+import RequestOfficialPage from "./pages/RequestOfficialPage";
 
 function PrivateRoute({
   children,
@@ -59,6 +60,14 @@ export default function App() {
           element={
             <PrivateRoute role="official">
               <AdminPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/request-official"
+          element={
+            <PrivateRoute>
+             <RequestOfficialPage />
             </PrivateRoute>
           }
         />

@@ -35,16 +35,20 @@ def create_token(data: dict) -> str:
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
+ADMIN_EMAIL = "241030@tkmce.ac.in"
+
 @router.post("/register")
 def register(payload: UserRegister, db: Session = Depends(get_db)):
     existing = db.query(User).filter(User.email == payload.email).first()
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
+
+    # Force citizen role for everyone — admin is set manually in DB
     user = User(
         name=payload.name,
         email=payload.email,
         hashed_password=hash_password(payload.password),
-        role=payload.role
+        role=RoleEnum.citizen
     )
     db.add(user)
     db.commit()

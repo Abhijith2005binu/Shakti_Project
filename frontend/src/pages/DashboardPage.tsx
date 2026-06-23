@@ -48,6 +48,12 @@ export default function DashboardPage() {
           >
             + New Grievance
           </Link>
+          <Link
+            to="/request-official"
+            className="text-sm text-white underline hover:text-green-200"
+          >
+              Apply as Official
+          </Link>
           <button
             onClick={handleLogout}
             className="text-sm underline hover:text-green-200"

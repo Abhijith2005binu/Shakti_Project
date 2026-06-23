@@ -65,3 +65,17 @@ class StatusUpdate(BaseModel):
 # ─── Rating ─────────────────────────────────────────
 class RatingCreate(BaseModel):
     score: int
+
+# ---------Official Request------------------------------
+class OfficialRequestCreate(BaseModel):
+    reason: str
+
+class OfficialRequestResponse(BaseModel):
+    id: int
+    user_id: int
+    reason: str
+    status: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

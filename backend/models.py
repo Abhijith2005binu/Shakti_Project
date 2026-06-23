@@ -64,3 +64,18 @@ class Rating(Base):
     citizen_id = Column(Integer, ForeignKey("users.id"))
     score = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+class OfficialRequestStatus(str, enum.Enum):
+    pending = "pending"
+    approved = "approved"
+    rejected = "rejected"
+
+class OfficialRequest(Base):
+    __tablename__ = "official_requests"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True)
+    reason = Column(Text, nullable=False)
+    status = Column(Enum(OfficialRequestStatus), default=OfficialRequestStatus.pending)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    reviewed_at = Column(DateTime(timezone=True), nullable=True)
+    user = relationship("User")
